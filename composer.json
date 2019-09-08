@@ -7,7 +7,6 @@
 			"email": "dom@webiz.cz"
 		}
 	],
-	"minimum-stability": "dev",
 	"require": {
 		"php": ">=5.6.0",
 		"illuminate/support": "^6.0",
