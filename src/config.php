@@ -1,7 +1,7 @@
 <?php
 return [
-	'app_name' => 'XXX',
-	'app_email' => 'XXX',
-	'app_api_key' => 'XXX',
+	'account_name' => 'XXX',
+	'account_email' => 'XXX',
+	'account_api_key' => 'XXX',
 	'app_contact' => 'PHPlib <your@email.cz>',
 ];

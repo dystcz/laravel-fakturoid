@@ -8,9 +8,9 @@ class LaravelFakturoid {
 
 	public function __construct() {
 		$this->config = [
-			'app_name' => config('fakturoid.app_name'),
-			'app_email' => config('fakturoid.app_email'),
-			'app_api_key' => config('fakturoid.app_api_key'),
+			'account_name' => config('fakturoid.app_name'),
+			'account_email' => config('fakturoid.app_email'),
+			'account_api_key' => config('fakturoid.app_api_key'),
 			'app_contact' => config('fakturoid.app_contact'),
 		];
 		$this->initFakturoid();
@@ -22,8 +22,15 @@ class LaravelFakturoid {
 		return $this->fakturoid;
 	}
 
-	public function gooo() {
-		dd($this);
+	public function __call($name, $arguments) {
+		if (method_exists($this, $name)) {
+			return $this->{$name}(...$arguments);
+		} else if (method_exists($this->fakturoid, $name)) {
+			$fakturoid = $this->fakturoid;
+			$methodResult = $fakturoid->{$name}(...$arguments);
+			return $methodResult;
+		}
+		return null;
 	}
 
 }
