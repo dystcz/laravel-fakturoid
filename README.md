@@ -65,11 +65,37 @@ return [
 
 ## Examples
 
-### Create Subject
+### Create Subject, Create Invoice, Send Invoice
 
 ```php
 
-\Fakturoid::createSubject(array('name' => 'Firma s.r.o.', 'email' => 'aloha@pokus.cz'));
+use Fakturoid;
+use Fakturoid\Exception;
+
+try {
+	// create subject
+	$subject = Fakturoid::createSubject(array(
+		'name' => 'Firma s.r.o.',
+		'email' => 'aloha@pokus.cz'
+	));
+	if ($subject->getBody()) {
+		$subject = $subject->getBody();
+
+		// create invoice with lines
+		$lines = array(array(
+			'name' => 'Big sale',
+			'quantity' => 1,
+			'unit_price' => 1000
+		));
+		$invoice = Fakturoid::createInvoice(array('subject_id' => $subject->id, 'lines' => $lines));
+		$invoice = $invoice->getBody();
+
+		// send created invoice
+		Fakturoid::fireInvoice($invoice->id, 'deliver');
+	}
+} catch (Exception $e) {
+	dd($e->getCode() . ": " . $e->getMessage());
+}
 
 ```
 
