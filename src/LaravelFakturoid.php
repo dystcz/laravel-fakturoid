@@ -2,40 +2,32 @@
 
 namespace WEBIZ\LaravelFakturoid;
 
-use Fakturoid;
+use Fakturoid\Client as FakturoidClient;
 
 class LaravelFakturoid
 {
+    protected FakturoidClient $fakturoid;
+
     public function __construct()
     {
-        $this->config = [
-            'account_name' => config('fakturoid.account_name'),
-            'account_email' => config('fakturoid.account_email'),
-            'account_api_key' => config('fakturoid.account_api_key'),
-            'app_contact' => config('fakturoid.app_contact'),
-        ];
-        $this->initFakturoid();
+        $this->fakturoid = new FakturoidClient(
+            config('fakturoid.account_name'),
+            config('fakturoid.account_email'),
+            config('fakturoid.account_api_key'),
+            config('fakturoid.app_contact')
+        );
     }
 
-    protected function initFakturoid()
+    public function __call($method, $arguments)
     {
-        $this->fakturoid = new Fakturoid\Client($this->config['account_name'], $this->config['account_email'], $this->config['account_api_key'], $this->config['app_contact']);
-
-        return $this->fakturoid;
-    }
-
-    public function __call($name, $arguments)
-    {
-        if (method_exists($this, $name)) {
-            return $this->{$name}(...$arguments);
+        if (method_exists($this, $method)) {
+            return $this->{$method}(...$arguments);
         }
 
-        if (method_exists($this->fakturoid, $name)) {
-            $fakturoid = $this->fakturoid;
-            $methodResult = $fakturoid->{$name}(...$arguments);
-            return $methodResult;
+        if (method_exists($this->fakturoid, $method)) {
+            return $this->fakturoid->{$method}(...$arguments);
         }
 
-        return null;
+        throw new \BadMethodCallException("Method '{$method}' does not exist on Fakturoid instance.");
     }
 }
