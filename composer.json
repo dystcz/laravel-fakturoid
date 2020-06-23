@@ -1,20 +1,65 @@
 {
-	"name": "dominik-wbz/laravel-fakturoid",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Dominik Nguyen",
-			"email": "dom@webiz.cz"
-		}
-	],
-	"require": {
-		"php": ">=5.6.0",
-		"illuminate/support": "5.*",
-		"fakturoid/fakturoid-php": "^1.0"
-	},
-	"autoload": {
-		"psr-4": {
-			"WEBIZ\\LaravelFakturoid\\": "src/"
-		}
-	}
+    "name": "dominik-wbz/laravel-fakturoid",
+    "description": "Fakturoid Laravel Wrapper",
+    "keywords": [
+        "webiz",
+        "laravel",
+        "ecommerce",
+        "invoicing"
+    ],
+    "homepage": "https://github.com/dominik-wbz/laravel-fakturoid",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Dominik Nguyen",
+            "email": "dom@webiz.cz",
+            "role": "Developer"
+        },
+        {
+            "name": "Jakub Theimer",
+            "email": "theimer@madne.st",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0",
+        "laravel/framework": "^7.0",
+        "illuminate/support": "^6.18|^7.0",
+        "fakturoid/fakturoid-php": "^1.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.3",
+        "orchestra/testbench": "^5.1",
+        "phpunit/phpunit": "^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WEBIZ\\LaravelFakturoid\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WEBIZ\\LaravelFakturoid\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "WEBIZ\\LaravelFakturoid\\FakturoidServiceProvider"
+            ],
+            "aliases": {
+                "Fakturoid": "WEBIZ\\LaravelFakturoid\\Facade"
+            }
+        }
+    }
 }

@@ -1,3 +1,9 @@
-composer.lock
+build
 vendor
-.DS_Store
+tests/TestSupport/temp
+tests/temp
+composer.lock
+phpunit.xml
+.env
+.phpunit.result.cache
+.php_cs.cache

@@ -5,29 +5,33 @@ namespace WEBIZ\LaravelFakturoid;
 use Illuminate\Support\ServiceProvider;
 use WEBIZ\LaravelFakturoid\LaravelFakturoid;
 
-class FakturoidServiceProvider extends ServiceProvider {
-	/**
-	 * Bootstrap services.
-	 *
-	 * @return void
-	 */
-	public function boot() {
-		$this->publishes([
-			__DIR__ . '/config.php' => config_path('fakturoid.php'),
-		]);
-	}
+class FakturoidServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap the application services.
+     */
+    public function boot()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/../config/fakturoid.php' => config_path('fakturoid.php'),
+            ], 'config');
+        }
+    }
 
-	/**
-	 * Register services.
-	 *
-	 * @return void
-	 */
-	public function register() {
-		if (is_dir($vendor = __DIR__ . '/../vendor')) {
-			require_once $vendor . '/autoload.php';
-		}
-		$this->app->singleton('Fakturoid', function ($app) {
-			return new LaravelFakturoid();
-		});
-	}
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        // Automatically apply the package configuration
+        $this->mergeConfigFrom(__DIR__ . '/../config/fakturoid.php', 'fakturoid');
+
+        // Register the main class to use with the facade
+        $this->app->singleton('laravel-fakturoid', function () {
+            return new LaravelFakturoid;
+        });
+    }
 }

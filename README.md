@@ -4,9 +4,9 @@ Simple wrapper for official php package https://github.com/fakturoid/fakturoid-p
 
 ### Docs
 
--   [Installation](#installation)
--   [Configuration](#configuration)
--   [Examples](#examples)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Examples](#examples)
 
 ## Installation
 
@@ -19,28 +19,6 @@ composer require dominik-wbz/laravel-fakturoid
 ```
 
 This will both update composer.json and install the package into the vendor/ directory.
-
-Next, add the service provider and facade to `config/app.php`
-
-Add the service provider to providers:
-
-```
-'providers' => [
-    ...
-    WEBIZ\LaravelFakturoid\FakturoidServiceProvider::class,
-    ...
-]
-```
-
-And add the facade to aliases:
-
-```
-'aliases' => [
-    ...
-    'Fakturoid' => WEBIZ\LaravelFakturoid\Facade::class,
-    ...
-]
-```
 
 ### Step 2: Configuration
 
@@ -56,10 +34,10 @@ With this command, initialize the configuration and modify the created file, loc
 
 ```php
 return [
-    'account_name' => 'XXX',
-    'account_email' => 'XXX',
-    'account_api_key' => 'XXX',
-    'app_contact' => 'PHPlib <your@email.cz>',
+    'account_name' => env('FAKTUROID_NAME', 'XXX'),
+    'account_email' => env('FAKTUROID_EMAIL', 'XXX'),
+    'account_api_key' => env('FAKTUROID_API_KEY', 'XXX'),
+    'app_contact' => env('FAKTUROID_APP_CONTACT', 'Application <your@email.cz>'),
 ];
 ```
 
@@ -70,35 +48,37 @@ return [
 ```php
 
 use Fakturoid;
-use Fakturoid\Exception;
 
 try {
-	// create subject
-	$subject = Fakturoid::createSubject(array(
-		'name' => 'Firma s.r.o.',
-		'email' => 'aloha@pokus.cz'
-	));
-	if ($subject->getBody()) {
-		$subject = $subject->getBody();
+    // create subject
+    $subject = Fakturoid::createSubject(array(
+        'name' => 'Firma s.r.o.',
+        'email' => 'aloha@pokus.cz'
+    ));
+    if ($subject->getBody()) {
+        $subject = $subject->getBody();
 
-		// create invoice with lines
-		$lines = array(array(
-			'name' => 'Big sale',
-			'quantity' => 1,
-			'unit_price' => 1000
-		));
-		$invoice = Fakturoid::createInvoice(array('subject_id' => $subject->id, 'lines' => $lines));
-		$invoice = $invoice->getBody();
+        // create invoice with lines
+        $lines = [
+            [
+                'name' => 'Big sale',
+                'quantity' => 1,
+                'unit_price' => 1000
+            ],
+        ];
 
-		// send created invoice
-		Fakturoid::fireInvoice($invoice->id, 'deliver');
-	}
-} catch (Exception $e) {
-	dd($e->getCode() . ": " . $e->getMessage());
+        $invoice = Fakturoid::createInvoice(array('subject_id' => $subject->id, 'lines' => $lines));
+        $invoice = $invoice->getBody();
+
+        // send created invoice
+        Fakturoid::fireInvoice($invoice->id, 'deliver');
+    }
+} catch (\Exception $e) {
+    dd($e->getCode() . ": " . $e->getMessage());
 }
 
 ```
 
 ## License
 
-Copyright (c) 2019 webiz eu s.r.o MIT Licensed.
+Copyright (c) 2019 - 2020 webiz eu s.r.o MIT Licensed.
