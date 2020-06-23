@@ -48,7 +48,6 @@ return [
 ```php
 
 use Fakturoid;
-use Fakturoid\Exception;
 
 try {
     // create subject
@@ -74,7 +73,7 @@ try {
         // send created invoice
         Fakturoid::fireInvoice($invoice->id, 'deliver');
     }
-} catch (Exception $e) {
+} catch (\Exception $e) {
     dd($e->getCode() . ": " . $e->getMessage());
 }
 
