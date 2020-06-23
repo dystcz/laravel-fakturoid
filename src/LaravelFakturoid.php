@@ -28,11 +28,14 @@ class LaravelFakturoid
     {
         if (method_exists($this, $name)) {
             return $this->{$name}(...$arguments);
-        } else if (method_exists($this->fakturoid, $name)) {
+        }
+
+        if (method_exists($this->fakturoid, $name)) {
             $fakturoid = $this->fakturoid;
             $methodResult = $fakturoid->{$name}(...$arguments);
             return $methodResult;
         }
+
         return null;
     }
 }
