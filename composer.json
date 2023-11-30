@@ -1,5 +1,5 @@
 {
-	"name": "dominik-wbz/laravel-fakturoid",
+	"name": "dystcz/laravel-fakturoid",
 	"description": "Fakturoid Laravel Wrapper",
 	"keywords": [
 		"webiz",
@@ -7,7 +7,7 @@
 		"ecommerce",
 		"invoicing"
 	],
-	"homepage": "https://github.com/dominik-wbz/laravel-fakturoid",
+	"homepage": "https://github.com/dystcz/laravel-fakturoid",
 	"license": "MIT",
 	"type": "library",
 	"authors": [
